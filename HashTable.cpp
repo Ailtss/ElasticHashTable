@@ -264,22 +264,31 @@ void HashTable::resize(int newSize)
     
     for(int i = 0; i < oldSize; i++)
     {
-  
+
+  		
 
     	if(this->data[i] != ENTRY_DELETED && this->data[i] != nullptr)
-    	{
+    	{	
     		int newBase = this->hash(this->data[i]->getKey());
-
-    		int newIndex = (newBase+i) % this->getSize();
-
-    		if(newData[newIndex] != nullptr)
+   
+    		for(int j = 0; j < this->getSize(); j++)
     		{
+    			int newIndex = (newBase+j) % this->getSize();
+
+    			if(newData[newIndex] == nullptr)
+    			{
+    				newData[newIndex] = this->data[i];
+    				break;
+    			}
 
     		}
 
-    		newData[newIndex] = this->data[i];
+    		
     	}
     }
+
+    delete [] this->data;
+    this->data = newData;
     
     //std::cout << "ERRO: Método resize(int) ainda não foi implementado.\n" << std::endl;
     //std::exit(1);
